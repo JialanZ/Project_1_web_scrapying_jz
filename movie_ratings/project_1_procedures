@@ -1,0 +1,39 @@
+
+
+https://www.imdb.com/search/title?year=2018&title_type=feature&sort=num_votes,desc
+https://www.imdb.com/search/title?year=2018&title_type=feature&sort=num_votes,desc&page=2&ref_=adv_nxt
+https://www.imdb.com/search/title?year=2018&title_type=feature&sort=num_votes,desc&page=3&ref_=adv_nxt
+
+#web to scrap
+https://www.imdb.com/search/title?year=2018&title_type=feature&sort=num_votes,desc
+
+#request from the website
+scrapy shell 'https://www.imdb.com/search/title?year=2018&title_type=feature&sort=num_votes,desc'
+
+# to get the xpath
+movie_blocks_xpath= response.xpath('//div[@class="article"]//div[@class="lister-item mode-advanced"]')
+
+
+#scrap data 
+#to get the movie name xpath. dont forget ro use period!!! it means start xpath at movie_blocks_xpath
+movie_names_xpath = movie_blocks_xpath.xpath('.//h3[@class="lister-item-header"]/a/text()')
+movie_names_xpath[1]
+#xpath start counting from 1 instead of 0. but movie_names_xpath is a python list! the first element is with index 0!
+
+#to get movie_rated
+movie_rateds_xpath = movie_blocks_xpath.xpath('.//p[@class="text-muted "]/span[@class="certificate"]/text()')
+
+#to get genre
+movie_genres_xpath = movie_blocks_xpath.xpath('.//p[@class="text-muted "]/span[@class="genre"]/text()')
+
+#to get imdb_rating
+movie_imdb_ratings_xpath = movie_blocks_xpath.xpath('.//div[@class="inline-block ratings-imdb-rating"]/strong/text()')
+
+#to get meta_rating. note that some of the movies dont have metascore rating!
+movie_meta_ratings_xpath = movie_blocks_xpath.xpath('.//div[@class="inline-block ratings-metascore"]/span/text()')
+
+#to get n_of_votes. scrap the first span tag with name='nv'
+movie_n_of_votes_xpath = movie_blocks_xpath.xpath('.//p[@class="sort-num_votes-visible"]/span[@name="nv"][1]/text()')
+
+#to the the gross. scrap the second span tag with name='nv'
+movie_grosses_xpath = movie_blocks_xpath.xpath('.//p[@class="sort-num_votes-visible"]/span[@name="nv"][2]/text()')
